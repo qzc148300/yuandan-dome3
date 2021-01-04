@@ -1,0 +1,42 @@
+<script type="text/javascript">
+$(function(){
+	tong();
+})
+function tong(){
+	$("#tree").tree({
+		url:"<%=path%>/emp/findtree.do",
+		onClick:function(node){
+			if (node.url !=null && node.url !="") {
+			//	alert(node.url);
+				/* var flag = $("#mytab").tabs("exists",node.text); */
+				var flag = $("#mytab").tabs("exists",node.text);
+				if (flag) {
+					$("#mytab").tabs("select",node.text);
+				}else {
+					$("#mytab").tabs("add",{
+						title:node.text,
+						closable:true,
+						content:createPage(node.url),
+						tools:[{
+							iconCls:"icon-mini-refresh",
+							handler:function(){
+							var tab = $('#mytab').tabs('getSelected');
+							$('#mytab').tabs('update',{
+								tab:tab,
+								options:{
+									content:createPage(node.url)
+								}
+							})
+							}
+						}]
+					});
+				}
+			}
+		}
+	})
+}
+//使用iframe标签引入页面
+function createPage(url){
+	return "<iframe style='width:100%;height:100%' frameborder='0' scrolling='auto' src='<%=request.getContextPath() %>"+url+"'></iframe>";
+}	
+</script>

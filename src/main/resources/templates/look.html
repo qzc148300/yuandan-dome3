@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"
+>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<script type="text/javascript" src="../js/jquery-easyui-1.5/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/jquery-easyui-1.5/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../js/jquery-easyui-1.5/locale/easyui-lang-zh_CN.js"></script>
+
+	<link rel="stylesheet" href="../js/jquery-easyui-1.5/themes/black/easyui.css"/>
+	<link rel="stylesheet" href="../js/jquery-easyui-1.5/themes/icon.css"/>
+	<title>Insert title here</title>
+</head>
+<body>
+	<dir id="tools">
+		<a class="easyui-linkbutton" onclick="AscDd()">升序</a>
+		<a class="easyui-linkbutton" onclick="DescDd()">降序</a>
+		下单时间:<input id="startdate"  class="easyui-datebox"/>---
+							<input id="enddate"  class="easyui-datebox"/>
+		<a class="easyui-linkbutton"  href="javascript:searchtt()">搜索</a>
+		<a class="easyui-linkbutton"  href="javascript:userdaochu()">导出</a>
+	</dir>
+	<table id="tt"></table>
+</body>
+<script type="text/javascript">
+	$(function(){
+		inittable();
+	})
+	//降序
+	function DescDd(){
+		$("#tt").datagrid("load",{
+			flag:2
+		})
+	}
+
+	//升序
+	function AscDd(){
+		$("#tt").datagrid("load",{
+			flag:1
+		})
+	}
+	function userdaochu(){
+		location.href="../ticket/daochu";
+	}
+
+	function searchtt(){
+		$("#tt").datagrid("load",{
+			startdate:$("#startdate").datebox("getValue"),
+			enddate:$("#enddate").datebox("getValue"),
+		})
+	}
+	function inittable(){
+		$("#tt").datagrid({
+			url:"../ticket/findordertable",
+			toolbar:"#tools",
+			columns:[
+					[
+				{field:"check",checkbox:true},
+				{field:"start",title:"出发站",width:100},
+				{field:"stop",title:"到达站",width:100},
+				{field:"seat",title:"席别",width:100,formatter:function(value,row,index){
+						if (value==1){
+							return "商务座"
+						}else if (value==2){
+							return "一等座"
+						}else {
+							return "二等座"
+						}
+					}},
+				{field:"tname",title:"类型",width:100},
+				{field:"count",title:"购买票数",width:100},
+				{field:"price",title:"票价",width:100},
+				{field:"numprice",title:"付款",width:100},
+				{field:"username",title:"用户名称",width:100},
+				{field:"ordertime",title:"下单时间",width:100},
+			          ]
+			],
+			pagination:true,
+			pageSize:2,
+			pageList:[2,4,6,8,10],
+		})
+	}
+</script>
+</html>

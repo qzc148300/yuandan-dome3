@@ -1,0 +1,20 @@
+
+server:
+  port: 8083
+#配置数据库连接信息
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://7LYQTPBGIX32UGR:3306/2004?characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+
+
+  data:
+    mongodb:
+      uri: mongodb://7LYQTPBGIX32UGR:27017/2006
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

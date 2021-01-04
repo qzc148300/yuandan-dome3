@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro"
+>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="../js/jquery-easyui-1.5/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-easyui-1.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-easyui-1.5/locale/easyui-lang-zh_CN.js"></script>
+
+    <link rel="stylesheet" href="../js/jquery-easyui-1.5/themes/black/easyui.css"/>
+    <link rel="stylesheet" href="../js/jquery-easyui-1.5/themes/icon.css"/>
+    <title>Insert title here</title>
+</head>
+<body>
+
+<table id="tt"></table>
+</body>
+<script type="text/javascript">
+    $(function () {
+        inittable();
+    })
+
+
+    function inittable() {
+        $("#tt").datagrid({
+            url: "../ticket/findtickettable",
+            toolbar: "#tools",
+            columns:[
+                [
+                    {field:"check",checkbox:true},
+                    {field:"start",title:"出发站",width:100},
+                    {field:"stop",title:"到达站",width:100},
+                    {field:"seat",title:"席别",width:100,formatter:function(value,row,index){
+                            if (value==1){
+                                return "商务座"
+                            }else if (value==2){
+                                return "一等座"
+                            }else {
+                                return "二等座"
+                            }
+                        }},
+                    {field:"tname",title:"类型",width:100},
+                    {field:"price",title:"票价",width:100},
+                    {field:"count",title:"余票",width:100},
+                    {field:"time",title:"发出时间",width:100},
+                    {field:"cao",title:"操作",width:200,formatter:function(value,row,index){
+                            var str = "<input type='number' value='0' style='width: 50px' id='aa'/>"+"<input type='button' onclick='jia()' style='height: 20px' value='+' id='jia'/>  "+"<input type='button' onclick='jian()' style='height: 20px' value='-' id='jian'/> | "+"<a class='btn btn-default' href='javascript:buypiao(\""+row.id+"\",\""+row.price+"\")' role='button'>购买</a>"
+                            return str
+                        }},
+                ]
+            ],
+            pagination: true,
+            pageSize: 2,
+            pageList: [2, 4, 6, 8, 10],
+        })
+    }
+    function jia() {
+        var aa =$("#aa").val();
+        var aaa=Number(aa)
+        if (aaa=='0'){
+            $("#aa").val(1);
+        }else if (aaa=="5"){
+            alert("一次最多购买五张票")
+        }else {
+            var  aaaa=aaa+1;
+            $("#aa").val(aaaa);
+        }
+
+    }
+    function jian() {
+        var aa =$("#aa").val();
+        var aaa=Number(aa)
+        if (aaa=='0'){
+            alert("请合理选择票数")
+        }else {
+            var  aaaa=aaa-1;
+            $("#aa").val(aaaa);
+        }
+    }
+
+    function buypiao(id,price) {
+        var aa =$("#aa").val();
+        var numprice = aa*price;
+        alert(numprice)
+        $.ajax({
+            url:"../ticket/buypiao",
+            data:{id:id,aa:aa,numprice:numprice},
+            success:function () {
+                $("#aa").val(0);
+                alert("购票成功");
+            }
+        })
+    }
+</script>
+</html>

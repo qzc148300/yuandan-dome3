@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.dao.TicketMapper" >
+  <resultMap id="BaseResultMap" type="com.jk.entity.Ticket" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="start" property="start" jdbcType="VARCHAR" />
+    <result column="stop" property="stop" jdbcType="VARCHAR" />
+    <result column="seat" property="seat" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="tid" property="tid" jdbcType="INTEGER" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, start, stop, seat, time, tid, count, price
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_ticket
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_ticket
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jk.entity.Ticket" >
+    insert into t_ticket (id, start, stop, 
+      seat, time, tid, 
+      count, price)
+    values (#{id,jdbcType=INTEGER}, #{start,jdbcType=VARCHAR}, #{stop,jdbcType=VARCHAR}, 
+      #{seat,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{tid,jdbcType=INTEGER}, 
+      #{count,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jk.entity.Ticket" >
+    insert into t_ticket
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="start != null" >
+        start,
+      </if>
+      <if test="stop != null" >
+        stop,
+      </if>
+      <if test="seat != null" >
+        seat,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="tid != null" >
+        tid,
+      </if>
+      <if test="count != null" >
+        count,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="start != null" >
+        #{start,jdbcType=VARCHAR},
+      </if>
+      <if test="stop != null" >
+        #{stop,jdbcType=VARCHAR},
+      </if>
+      <if test="seat != null" >
+        #{seat,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tid != null" >
+        #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="count != null" >
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jk.entity.Ticket" >
+    update t_ticket
+    <set >
+      <if test="start != null" >
+        start = #{start,jdbcType=VARCHAR},
+      </if>
+      <if test="stop != null" >
+        stop = #{stop,jdbcType=VARCHAR},
+      </if>
+      <if test="seat != null" >
+        seat = #{seat,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tid != null" >
+        tid = #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="count != null" >
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jk.entity.Ticket" >
+    update t_ticket
+    set start = #{start,jdbcType=VARCHAR},
+      stop = #{stop,jdbcType=VARCHAR},
+      seat = #{seat,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP},
+      tid = #{tid,jdbcType=INTEGER},
+      count = #{count,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="finduser" resultType="com.jk.entity.User">
+    select * from user
+  </select>
+  <select id="findTree" resultType="com.jk.entity.Tree">
+    select * from t_tree where  pid = #{pid}
+  </select>
+
+
+  <select id="findticketcount" resultType="int">
+    select count(*) from t_ticket
+  </select>
+
+  <select id="findtickettable" resultType="com.jk.entity.Ticket">
+    select * from t_ticket a left join t_type b on a.tid = b.tid limit #{start},#{rows}
+  </select>
+
+  <update id="updateuser">
+    update user   set balance=balance-#{numprice}
+  </update>
+
+  <update id="updateticket">
+    update t_ticket  set count=count-#{aa} where  id= #{id}
+  </update>
+
+  <select id="findticket" resultType="com.jk.entity.Ticket">
+    select * from t_ticket a left join t_type b on a.tid = b.tid where id = #{id}
+  </select>
+
+</mapper>
