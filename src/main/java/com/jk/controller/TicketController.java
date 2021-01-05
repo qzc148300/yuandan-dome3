@@ -74,6 +74,10 @@ public class TicketController {
        return ticketService.findUser( );
     }
 
-
+    @RequestMapping("ff")
+    @ResponseBody
+    public void ff(){
+        System.out.println("1111");
+    }
 
 }
