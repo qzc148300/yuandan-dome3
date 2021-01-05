@@ -78,6 +78,7 @@ public class TicketController {
     @ResponseBody
     public void ff(){
         System.out.println("1111");
+        System.out.println("22222");
     }
 
 }
